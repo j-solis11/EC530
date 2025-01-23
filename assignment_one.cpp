@@ -14,6 +14,7 @@ int main (int argc, char *argv[])
     float tempFloat;
     float longitude;
     int count = 0;
+    int countTwo = 0;
     vector<float> latitudeListOne, latitudeListTwo;
     vector<float> longitudeListOne, longitudeListTwo;
 
@@ -80,7 +81,7 @@ int main (int argc, char *argv[])
         try
         {
             tempFloat = stof(input);
-            newCount += 1;
+            countTwo += 1;
             latitudeListTwo.push_back(tempFloat);
         }
         catch (const invalid_argument& e)
@@ -92,7 +93,7 @@ int main (int argc, char *argv[])
     cout << "Please enter " << count << " longitudes for array 2. To quit, enter q:";
     
     newCount = 0;
-    while (newCount != count)
+    while (newCount != countTwo)
     {
         cin >> input;
         if (input == "q")
@@ -119,7 +120,7 @@ int main (int argc, char *argv[])
     cout << endl;
 
     cout << "Array 2: " << endl;
-    for (int i = 0; i < count ; i++)
+    for (int i = 0; i < countTwo ; i++)
     {
         cout << "Point " << i + 1 << ": "<< latitudeListTwo[i] << " " << longitudeListTwo[i] << endl;
     }
@@ -145,7 +146,7 @@ int main (int argc, char *argv[])
     {
         latitudeOne = latitudeListOne[i] * (3.14 / 180.0);
         longitudeOne = longitudeListOne[i]* (3.14 / 180.0);
-        for (int j = 0; j < count; j++)
+        for (int j = 0; j < countTwo; j++)
         {
             latitudeTwo = latitudeListTwo[j]* (3.14 / 180.0);
             longitudeTwo = longitudeListTwo[j]* (3.14 / 180.0);
