@@ -4,6 +4,7 @@
 #include <exception>
 #include <vector>
 #include <cmath>
+#include <climits>
 
 using namespace std;
 
@@ -63,9 +64,9 @@ int main (int argc, char *argv[])
         }
     }
 
-    cout << "Please enter " << count << " latitudes for array 2. When finished, enter n. To quit, enter q:";
+    cout << "Please enter latitudes for array 2. When finished, enter n. To quit, enter q:";
     newCount = 0;
-    while (newCount != count)
+    while (true)
     {
         cin >> input;
         if (input == "n")
