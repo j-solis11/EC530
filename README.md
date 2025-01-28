@@ -1,3 +1,3 @@
 # EC530
-Compile the file using g++ assignment_one.cpp -o assignment_one
-Then, you can run using ./assignment_one.exe in the cmd line. 
+Compile the program using g++ assignment_one.cpp -o assignment_one. If you would like to run the unit test, uncomment the ENABLE_UNIT_TEST_A line. If running without unit est, edit data.csv accordingly and use 
+./assignment_one
