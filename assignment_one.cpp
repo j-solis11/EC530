@@ -5,112 +5,128 @@
 #include <vector>
 #include <cmath>
 #include <climits>
+#include <fstream>
+#include <sstream>
 
 using namespace std;
 
+#define ENABLE_UNIT_TEST_A
+
+// Checking between two known locations and one starting
+// What is closer to New York, Point 1 in Vector 2 is London and Point 2 in Vector 2 is Paris
+// Answer should be Point 1
+void UnitTestA(const string& filename)
+{
+    cout << "UNIT TEST 1 BEGIN" << endl;
+    ofstream file(filename);
+    if (!file.is_open())
+    {
+        cout << "ERROR: Cannot open file for unit test." << endl;
+    }
+    file << "firstLatitudes,firstLongitudes,secondLatitudes,secondLongitudes" << endl;
+    file << 40.7128 << "," << 74.006 << "," << 51.5074 << "," << -0.1278 << endl;
+    file << "," << "," << 35.6895 << "," << 139.6917 << endl;
+    file.close();
+    cout << "RESULT SHOULD BE 51.5074, 40.7128" << endl;
+}
+
 int main (int argc, char *argv[])
 {
-    string input;
-    float tempFloat;
-    float longitude;
-    int count = 0;
-    int countTwo = 0;
     vector<float> latitudeListOne, latitudeListTwo;
     vector<float> longitudeListOne, longitudeListTwo;
+    int count = 0;
+    int countTwo = 0;
+    string filename = "data.csv";
 
-    cout << "Please enter latitudes for array 1. When finished, enter n. To quit, enter q:";
+
+    #ifdef ENABLE_UNIT_TEST_A
+        UnitTestA(filename);
+    #endif
+
     
-    while (true)
+    ifstream filePointer(filename);
+
+    if (!filePointer)
     {
-        cin >> input;
-        if (input == "n")
-        {
-            break;
-        }
-        else if (input == "q")
-        {
-            return 0;
-        }
-        try
-        {
-            tempFloat = stof(input);
-            count += 1;
-            latitudeListOne.push_back(tempFloat);
-        }
-        catch (const invalid_argument& e)
-        {
-            cout << "Please enter a valid latitude (float)." << endl;
-        }
+        cout << "ERROR: Cannot open file." << endl;
+        return 0;
     }
 
-    cout << "Please enter " << count << " longitudes for array 1. To quit, enter q:";
-    
-    int newCount = 0;
-    while (newCount != count)
+    string line;
+    getline(filePointer, line);     // getting header
+
+    while (getline(filePointer, line))
     {
-        cin >> input;
-        if (input == "q")
+        stringstream ss(line);
+        string latOne, lonOne, latTwo, lonTwo;
+        getline(ss, latOne, ',');
+        getline(ss, lonOne, ',');
+        getline(ss, latTwo, ',');
+        getline(ss, lonTwo, ',');
+        cout << latOne << " " << lonOne << " " << latTwo << " " << lonTwo << endl;
+        if (!latOne.empty())
         {
-            return 0;
+            float latOneFloat;
+            try
+            {
+                latOneFloat = stof(latOne);
+            }
+            catch(const exception& e)
+            {
+                
+            }
+            
+            latitudeListOne.push_back(latOneFloat);
+            count++;
         }
-        try
+
+        if (!lonOne.empty())
         {
-            tempFloat = stof(input);
-            newCount++;
-            longitudeListOne.push_back(tempFloat);
+            float lonOneFloat;
+            try
+            {
+                lonOneFloat = stof(lonOne);
+            }
+            catch(const exception& e)
+            {
+                
+            }
+            longitudeListOne.push_back(lonOneFloat);
         }
-        catch (const invalid_argument& e)
+
+        if (!latTwo.empty())
         {
-            cout << "Please enter a valid longitude (float)." << endl;
+            float latTwoFloat;
+            try
+            {
+                latTwoFloat = stof(latTwo);
+            }
+            catch(const exception& e)
+            {
+                
+            }
+            latitudeListTwo.push_back(latTwoFloat);
+            countTwo++;
         }
+
+        if (!lonTwo.empty())
+        {
+            float lonTwoFloat;
+            try
+            {
+                lonTwoFloat = stof(latOne);
+            }
+            catch(const exception& e)
+            {
+                
+            }
+            longitudeListTwo.push_back(lonTwoFloat);
+        }
+        
+        
     }
 
-    cout << "Please enter latitudes for array 2. When finished, enter n. To quit, enter q:";
-    newCount = 0;
-    while (true)
-    {
-        cin >> input;
-        if (input == "n")
-        {
-            break;
-        }
-        else if (input == "q")
-        {
-            return 0;
-        }
-        try
-        {
-            tempFloat = stof(input);
-            countTwo += 1;
-            latitudeListTwo.push_back(tempFloat);
-        }
-        catch (const invalid_argument& e)
-        {
-            cout << "Please enter a valid latitude (float)." << endl;
-        }
-    }
-
-    cout << "Please enter " << count << " longitudes for array 2. To quit, enter q:";
-    
-    newCount = 0;
-    while (newCount != countTwo)
-    {
-        cin >> input;
-        if (input == "q")
-        {
-            return 0;
-        }
-        try
-        {
-            tempFloat = stof(input);
-            newCount++;
-            longitudeListTwo.push_back(tempFloat);
-        }
-        catch (const invalid_argument& e)
-        {
-            cout << "Please enter a valid longitude (float)." << endl;
-        }
-    }
+    filePointer.close();    // Closing file
 
     cout << "Array 1: " << endl;
     for (int i = 0; i < count ; i++)
